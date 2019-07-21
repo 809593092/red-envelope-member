@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
 import Api from './api'
 
-class Member extends Api {
+class User extends Api {
 
     /**
      * 查询会员信息
@@ -17,6 +16,27 @@ class Member extends Api {
             })
         })
     }
+
+    dredgeSvip(mumbers) {
+        return new Promise((resolve, reject) => {
+            this.get("user/openSvip", {mumbers: mumbers}).then(response => {
+                resolve(response)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    login(username, password) {
+        return new Promise((resolve, reject) => {
+            this.post("admin/login", {user_name: username, password}).then(response => {
+                resolve(response)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
 }
 
-export default Member;
+export default User;
