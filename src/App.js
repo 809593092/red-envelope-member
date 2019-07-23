@@ -5,12 +5,12 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import { ThemeProvider } from '@material-ui/styles';
 import {createMuiTheme} from "@material-ui/core";
 import Login from './pages/user/login'
-import red from "@material-ui/core/colors/red"
+// import red from "@material-ui/core/colors/red"
 
 
 const theme = createMuiTheme({
     palette: {
-        primary: red,
+        // primary: red,
         // secondary: green,
     }
 });

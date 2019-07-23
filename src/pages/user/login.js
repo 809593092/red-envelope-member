@@ -72,7 +72,6 @@ const useStyle = (theme) => ({
 });
 
 
-
 class Login extends BaseUser {
 
     SUCCESS = "#00CC99";
@@ -166,7 +165,7 @@ class Login extends BaseUser {
             return false
         }
 
-        if (! (password.length >= 6 && password.length <= 32)) {
+        if (!(password.length >= 6 && password.length <= 32)) {
             this.message.showMessage("手机号码格式在6-32位之间");
             return false
         }
@@ -209,11 +208,15 @@ class Login extends BaseUser {
                     {/*定义一个登录面板*/}
                     <div className={classes.container}>
                         <div className={classes.panel}>
-                            <input type={"number"} style={{borderBottomColor: this.state.userNameStyle}}
-                                    value={this.state.username}
+                            <input style={{borderBottomColor: this.state.userNameStyle}}
+                                   value={this.state.username}
                                    maxLength={11}
-                                   autoFocus={true} name={"phone"}
-                                   className={"input"} onChange={this.handlerUserNameChange.bind(this)}
+                                   autoFocus={true}
+                                   name={"phone"}
+                                   type={"number"}
+                                   pattern={"[0-9]*"}
+                                   className={"input"}
+                                   onChange={this.handlerUserNameChange.bind(this)}
                                    placeholder={"输入手机号"}/>
                             <input type={"password"} style={{borderBottomColor: this.state.passwordStyle}}
                                    value={this.state.password}

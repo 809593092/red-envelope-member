@@ -13,6 +13,9 @@ const useStyle = theme => ({
     root: {
         flexGrow: 1,
     },
+    toolbar: {
+        maxWidth: 10000,
+    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -31,7 +34,7 @@ const useStyle = theme => ({
         width: '100%',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing(3),
-            width: 'auto',
+            width: '100%',
         },
     },
     searchIcon: {
@@ -45,6 +48,7 @@ const useStyle = theme => ({
     },
     inputRoot: {
         color: 'inherit',
+        width: '100%',
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 7),
@@ -120,7 +124,10 @@ class Header extends Component {
             <div className={classes.root}>
                 <Message show={false} message={""} onBindMessageRef={this.onBindMessageRef}/>
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar className={classes.toolbar} component={"div"}
+                             disableGutters={false}
+                             variant={"regular"}
+                    >
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon/>
@@ -131,6 +138,7 @@ class Header extends Component {
                                 onChange={this.handlerInputChanged.bind(this)}
                                 placeholder="输入会员号查询"
                                 type="number"
+                                pattern="[0-9]*"
                                 classes={{
                                     root: classes.inputRoot,
                                     input: classes.inputInput,
