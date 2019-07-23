@@ -67,7 +67,7 @@ class Index extends Component {
 
     onSearchChanged = (member) => {
         this.setState({member: member});
-        this.container.onChanged(member)
+        this.container.searchButtonOnChanged(member)
     };
 
     onContentChangedRef = (ref) => {

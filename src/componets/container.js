@@ -48,16 +48,45 @@ class Container extends React.Component {
     constructor(props) {
         super(props);
         this.props.onChangeRef(this);
-        this.onChanged.bind(this);
+        this.searchButtonOnChanged.bind(this);
         this.state = {
             user: null,
             permission: null
         };
 
         this.onBindMessageRef.bind(this);
+        // console.log(this.getMyDate(1563869317))
     }
 
-    onChanged = (number) => {
+
+    getMyDate = (time) => {
+        if (typeof (time) == "undefined") {
+            return "";
+        }
+
+        time *= 1000;
+
+        let getzf = (num) => {
+            //补0操作,当时间数据小于10的时候，给该数据前面加一个0
+            if (parseInt(num) < 10) {
+                num = '0' + num;
+            }
+            return num;
+        };
+
+        let oDate = new Date(time),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth() + 1,
+            oDay = oDate.getDate(),
+            oHour = oDate.getHours(),
+            oMin = oDate.getMinutes(),
+            oSen = oDate.getSeconds(),
+            oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSen);//最后拼接时间
+
+        return oTime;
+    };
+
+    searchButtonOnChanged = (number) => {
         let then = this;
         User.prototype.fetch(number).then(response => {
 
@@ -75,13 +104,17 @@ class Container extends React.Component {
         })
     };
 
+    /**
+     * 开通SVIP
+     * @param event
+     */
     handlerSvipButtonClick = (event) => {
         const then = this;
         User.prototype.dredgeSvip(this.state.user.number).then(response => {
             if (response.status !== 200) {
                 then.message.showMessage(response.msg[0]);
             } else {
-                then.onChanged(this.state.user.number);
+                then.searchButtonOnChanged(this.state.user.number);
                 then.message.showMessage(response.msg[0]);
             }
         }).catch(error => {
@@ -96,7 +129,6 @@ class Container extends React.Component {
     showUserData(user, permission, classes) {
         return (
             <div>
-
                 <List component="nav" aria-label="Secondary mailbox folders" className={classes.root}>
                     <ListItem component={"a"} button>
                         <ListItemText primary="会员号"/>
@@ -113,10 +145,27 @@ class Container extends React.Component {
                         <ListItemText primary={permission.svip === 1 ? "是" : "否"} className={classes.item}/>
                     </ListItem>
                     <Divider/>
+                    {this.getMonthSvipData(permission, classes)}
+
                 </List>
                 {this.getSvipButton(permission.svip, classes)}
             </div>);
     };
+
+    getMonthSvipData = (permission, classes) => {
+        if (permission.month_svip > 0) {
+            return (
+                <React.Fragment>
+                    <ListItem button component={"a"} href="#simple-list">
+                        <ListItemText primary="包月VIP"/>
+                        <ListItemText primary={this.getMyDate(permission.month_svip)} className={classes.item}/>
+                    </ListItem>
+                    <Divider component={"hr"}/>
+                </React.Fragment>
+            );
+        }
+    };
+
 
     getSvipButton = (svip, classes) => {
         if (!svip) {
