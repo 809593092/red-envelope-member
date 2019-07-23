@@ -1,5 +1,5 @@
 import React from 'react';
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
 import withStyles from "@material-ui/core/styles/withStyles";
 import {withRouter} from "react-router";
 import BaseUser from "./base_user";
@@ -72,6 +72,7 @@ const useStyle = (theme) => ({
 });
 
 
+
 class Login extends BaseUser {
 
     SUCCESS = "#00CC99";
@@ -97,7 +98,7 @@ class Login extends BaseUser {
 
     componentDidMount() {
         // 判断cookie是否存在，如果是存在则直接去首页
-        if (cookie.load("token") !== undefined) {
+        if (localStorage.getItem("token") !== null) {
             // 去首页
             this.props.history.push("/");
         }
@@ -178,7 +179,8 @@ class Login extends BaseUser {
             if (response.data.status === 200) {
                 // 登录成功
                 // then.message.showMessage(response.data.msg);
-                cookie.save("token", response.data.data, {path: "/"});
+                // cookie.save("token", response.data.data, {path: "/"});
+                localStorage.setItem("token", response.data.data);
                 then.props.history.push("/");
             } else {
                 then.message.showMessage(response.data.msg);

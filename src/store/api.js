@@ -1,5 +1,5 @@
 import axios from 'axios'
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
 
 // "http://hongbaoapp.cn:8017/";
 axios.defaults.baseURL = "http://hongbaoapp.cn:8100/";
@@ -8,8 +8,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 axios.interceptors.request.use(
     config => {
-        let token = cookie.load("token");
-        if (token !== undefined) {
+        // let token = cookie.load("token");
+        let token = localStorage.getItem("token");
+        if (token !== null) {
             config.headers.common['Authorization'] = token
         } else {
             config.headers.common['Authorization'] = ""

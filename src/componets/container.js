@@ -12,7 +12,7 @@ const useStyle = (theme => ({
     root: {
         width: '100%',
         marginTop: 10,
-        maxWidth: 1000,
+        // maxWidth: 1000,
         alignContent: 'center',
         backgroundColor: theme.palette.background.paper,
     },

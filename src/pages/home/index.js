@@ -5,8 +5,7 @@ import Container from '../../componets/container'
 import Footer from '../../componets/footer'
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
-import cookie from 'react-cookies'
-
+// import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const useStyle = (theme) => ({
     root: {
@@ -57,10 +56,13 @@ class Index extends Component {
 
     componentDidMount() {
         // 如果是没有登录的话就跳转到登录界面
-        if (cookie.load("token") === undefined) {
+        // if (cookie.load("token") === undefined) {
+        //     this.props.history.push("/login")
+        // }
+
+        if (localStorage.getItem("token") === null) {
             this.props.history.push("/login")
         }
-
     }
 
     onSearchChanged = (member) => {
