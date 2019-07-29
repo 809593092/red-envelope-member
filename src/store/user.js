@@ -17,9 +17,15 @@ class User extends Api {
         })
     }
 
-    dredgeSvip(mumbers) {
+    /**
+     * 开通vip
+     * @param mumbers
+     * @param category
+     * @return {Promise<any>}
+     */
+    dredgeSvip(mumbers, category) {
         return new Promise((resolve, reject) => {
-            this.get("user/openSvip", {mumbers: mumbers}).then(response => {
+            this.get("user/openSvip", {mumbers: mumbers, category: category}).then(response => {
                 resolve(response)
             }).catch(error => {
                 reject(error)

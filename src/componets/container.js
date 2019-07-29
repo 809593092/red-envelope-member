@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import User from '../store/user'
 import 'typeface-roboto';
 import Message from "./message";
+import NativeSelect from "@material-ui/core/NativeSelect";
+import Input from "@material-ui/core/Input";
 
 const useStyle = (theme => ({
     root: {
@@ -51,11 +53,17 @@ class Container extends React.Component {
         this.searchButtonOnChanged.bind(this);
         this.state = {
             user: null,
-            permission: null
+            permission: null,
+            vipType: ''
         };
 
         this.onBindMessageRef.bind(this);
         // console.log(this.getMyDate(1563869317))
+        this.selectVipTypes = [
+            {name: "套餐一：5元使用7天", value: 'day_5'},
+            {name: "套餐二:10元包月", value: 'month_svip'},
+            {name: "套餐三：20元使用90天", value: 'day_20'},
+            {name: '永久SVIP', value: 'svip'},];
     }
 
 
@@ -109,8 +117,13 @@ class Container extends React.Component {
      * @param event
      */
     handlerSvipButtonClick = (event) => {
+        if (this.state.vipType === '') {
+            this.message.showMessage("还没选择温暖类别哦");
+            return;
+        }
+
         const then = this;
-        User.prototype.dredgeSvip(this.state.user.number).then(response => {
+        User.prototype.dredgeSvip(this.state.user.number, this.state.vipType).then(response => {
             if (response.status !== 200) {
                 then.message.showMessage(response.msg[0]);
             } else {
@@ -145,6 +158,7 @@ class Container extends React.Component {
                         <ListItemText primary={permission.svip === 1 ? "是" : "否"} className={classes.item}/>
                     </ListItem>
                     <Divider/>
+                    {this.getVipSelect(permission, classes)}
                     {this.getMonthSvipData(permission, classes)}
 
                 </List>
@@ -176,6 +190,37 @@ class Container extends React.Component {
         }
     };
 
+    handleChange = name => event => {
+        this.setState({
+            ...this.state,
+            [name]: event.target.value,
+        });
+    };
+
+    getVipSelect = (permission, classes) => {
+        if (! permission.svip ) {
+            let select = (
+                <NativeSelect
+                    value={this.state.vipType}
+                    onChange={this.handleChange('vipType')}
+                    input={<Input name="vip_type"/>}
+                >
+
+                    <option value=""/>
+                    {this.selectVipTypes.map((item, index) => {
+                        return (<option value={item.value} key={index}>{item.name}</option>);
+                    })}
+
+                </NativeSelect>
+                );
+            return (<div>
+                <ListItem button component={"a"} href="#simple-list">
+                    <ListItemText primary="vip类别"/>
+                    <ListItemText primary={select} className={classes.item}/>
+                </ListItem>
+            </div>);
+        }
+    };
 
     showEmptyMessage = (classes) => {
         return (

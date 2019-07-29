@@ -90,6 +90,9 @@ class Login extends BaseUser {
         };
 
         this.onBindMessageRef.bind(this);
+        this.inputRef = {};
+        this.inputRef.phone = React.createRef();
+        this.inputRef.password = React.createRef();
         // let params = new URLSearchParams(this.props.location.search);
         // console.log(params.get("login"))
     }
@@ -151,7 +154,28 @@ class Login extends BaseUser {
         }
     };
 
-    handleClickLogin = () => {
+    handleOnKeyUp = (e) => {
+        // e.preventDefault();
+        let inputName = e.target.name;
+
+        if (e.nativeEvent.keyCode === 13) {
+            if (this.state.username !== '' && inputName === "phone") {
+                this.inputRef.password.current.focus();
+            }
+
+            if (this.state.password !== '' && inputName === "password" && this.state.username === '') {
+                this.inputRef.phone.current.focus();
+            }
+
+            if (this.state.username !== '' && this.state.password !== '') {
+                this.handleClickLogin(e)
+            }
+            // this.inputRef.current.focus();
+        }
+    };
+
+    handleClickLogin = (e) => {
+        e.preventDefault();
         // const uid = 100;
         // cookie.save('userId', uid, {path: '/'});
         let username = this.state.username;
@@ -217,12 +241,18 @@ class Login extends BaseUser {
                                    pattern={"[0-9]*"}
                                    className={"input"}
                                    onChange={this.handlerUserNameChange.bind(this)}
-                                   placeholder={"输入手机号"}/>
+                                   placeholder={"输入手机号"}
+                                    onKeyUp={this.handleOnKeyUp.bind(this)}
+                                   ref={this.inputRef.phone}
+                            />
                             <input type={"password"} style={{borderBottomColor: this.state.passwordStyle}}
                                    value={this.state.password}
                                    name={"password"} className={"input"}
                                    onChange={this.handleOnChangePassword.bind(this)} placeholder={"登录密码"}
-                                   maxLength={20}/>
+                                   maxLength={20}
+                                   onKeyUp={this.handleOnKeyUp.bind(this)}
+                                   ref={this.inputRef.password}
+                            />
                             <Button variant="contained" color="primary"
                                     className={classes.logBtn}
                                     onClick={this.handleClickLogin.bind(this)}>温&nbsp;&nbsp;暖</Button>
